@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Tres cubos</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="module">
+    import * as THREE from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/controls/OrbitControls.js';
+
+    var WIDTH = window.innerWidth;
+    var HEIGHT = window.innerHeight;
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(WIDTH, HEIGHT);
+    renderer.setClearColor(0xDDDDDD, 1);
+    document.body.appendChild(renderer.domElement);
+
+    var scene = new THREE.Scene();
+
+    var camera = new THREE.PerspectiveCamera(80, WIDTH / HEIGHT);
+    camera.position.z = 4.5;
+    camera.position.x = -1.2;
+    camera.position.y = 2;
+    camera.rotation.set(0, -0.5, 0);
+    scene.add(camera);
+
+    var controls = new OrbitControls(camera, renderer.domElement);
+
+    // Primer cubo
+    var geometry1 = new THREE.BoxGeometry(1, 1, 1);
+    var material1 = new THREE.MeshPhongMaterial({ color: 0xCC99FF });
+    var cube1 = new THREE.Mesh(geometry1, material1);
+    scene.add(cube1);
+
+    // Segundo cubo
+    var geometry2 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    var material2 = new THREE.MeshPhongMaterial({ color: 0xFFCC99 });
+    var cube2 = new THREE.Mesh(geometry2, material2);
+    cube2.position.y = 1.25;
+    cube1.add(cube2);
+
+    // Tercer cubo
+    var geometry3 = new THREE.BoxGeometry(0.25, 0.25, 0.25);
+    var material3 = new THREE.MeshPhongMaterial({ color: 0x99CCFF });
+    var cube3 = new THREE.Mesh(geometry3, material3);
+    cube3.position.y = 0.625;
+    cube2.add(cube3);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(-1, 2, 4);
+    scene.add(light);
+
+    const size = 150;
+    const divisions = 160;
+    const axesHelper = new THREE.AxesHelper(1000);
+    scene.add(axesHelper);
+
+    const gridHelper = new THREE.GridHelper(size, divisions);
+    scene.add(gridHelper);
+
+    function render() {
+      requestAnimationFrame(render);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    render();
+  </script>
+</body>
+
+</html>
+
+
